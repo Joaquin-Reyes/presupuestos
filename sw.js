@@ -1,4 +1,4 @@
-const CACHE_VERSION = "presupuestos-v4";
+const CACHE_VERSION = "presupuestos-v5";
 const ASSETS = [
   "./",
   "./index.html",

@@ -23,7 +23,6 @@ const fields = [
   "jobDescription",
   "introText",
   "totalAmount",
-  "discount",
   "deposit",
   "showSignature",
   "validUntil",
@@ -110,12 +109,10 @@ function itemTotal(item) {
 }
 
 function calculateTotals(data) {
-  const subtotal = parseMoney(data.totalAmount);
-  const discount = parseMoney(data.discount);
+  const total = parseMoney(data.totalAmount);
   const deposit = parseMoney(data.deposit);
-  const total = Math.max(subtotal - discount, 0);
   const balance = Math.max(total - deposit, 0);
-  return { subtotal, discount, deposit, total, balance };
+  return { deposit, total, balance };
 }
 
 function getSavedQuotes() {
@@ -317,8 +314,6 @@ function renderPreview() {
       </div>
 
       <div class="totals budget-totals">
-        <div class="total-row"><span>Subtotal</span><strong>${currency.format(totals.subtotal)}</strong></div>
-        <div class="total-row"><span>Descuento</span><strong>${currency.format(totals.discount)}</strong></div>
         <div class="total-row grand-total"><span>Total presupuesto</span><strong>${currency.format(totals.total)}</strong></div>
         <div class="total-row"><span>Sena / anticipo</span><strong>${currency.format(totals.deposit)}</strong></div>
         <div class="total-row"><span>Saldo restante</span><strong>${currency.format(totals.balance)}</strong></div>
@@ -433,7 +428,6 @@ function newQuote() {
     introText: "Por medio de la presente se detalla presupuesto por los trabajos solicitados.",
     footerText: "Presupuesto sujeto a verificacion en obra. No incluye trabajos adicionales no detallados.",
     signatureText: "Firma / aclaracion",
-    discount: "0",
     deposit: "0"
   });
   save();
