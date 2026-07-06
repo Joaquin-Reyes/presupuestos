@@ -1,4 +1,4 @@
-const CACHE_VERSION = "presupuestos-v2";
+const CACHE_VERSION = "presupuestos-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -28,18 +28,27 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put("./index.html", responseClone));
+          return networkResponse;
+        })
+        .catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
 
-      return fetch(event.request).then((networkResponse) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((networkResponse) => {
         const responseClone = networkResponse.clone();
         caches.open(CACHE_VERSION).then((cache) => cache.put(event.request, responseClone));
         return networkResponse;
-      });
-    })
+      })
+      .catch(() => caches.match(event.request))
   );
 });
 

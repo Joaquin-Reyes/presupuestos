@@ -43,10 +43,12 @@ const savedQuotesList = document.querySelector("#savedQuotesList");
 const logoStatus = document.querySelector("#logoStatus");
 const updateBanner = document.querySelector("#updateBanner");
 const updateAppBtn = document.querySelector("#updateAppBtn");
+const forceUpdateBtn = document.querySelector("#forceUpdateBtn");
 const exportHint = document.querySelector("#exportHint");
 let waitingServiceWorker = null;
 let refreshingForUpdate = false;
 let exportHintTimeout = null;
+let serviceWorkerRegistration = null;
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -344,12 +346,37 @@ function showUpdateBanner(registration) {
   updateBanner.hidden = false;
 }
 
+function checkForAppUpdate() {
+  if (serviceWorkerRegistration) {
+    serviceWorkerRegistration.update();
+  }
+}
+
+function reloadWithCacheBust() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("v", String(Date.now()));
+  window.location.replace(url.toString());
+}
+
+function forceUpdateApp() {
+  if (!("serviceWorker" in navigator)) {
+    reloadWithCacheBust();
+    return;
+  }
+
+  Promise.all([
+    caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key)))),
+    navigator.serviceWorker.getRegistrations().then((registrations) => Promise.all(registrations.map((registration) => registration.unregister())))
+  ]).finally(reloadWithCacheBust);
+}
+
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) {
     return;
   }
 
   navigator.serviceWorker.register("./sw.js").then((registration) => {
+    serviceWorkerRegistration = registration;
     if (registration.waiting) {
       showUpdateBanner(registration);
     }
@@ -366,6 +393,8 @@ function registerServiceWorker() {
         }
       });
     });
+
+    setTimeout(checkForAppUpdate, 1500);
   });
 
   navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -374,6 +403,12 @@ function registerServiceWorker() {
     }
     refreshingForUpdate = true;
     window.location.reload();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      checkForAppUpdate();
+    }
   });
 }
 
@@ -447,9 +482,12 @@ function boot() {
 
   document.querySelector("#saveQuoteBtn").addEventListener("click", saveQuoteCopy);
   document.querySelector("#printBtn").addEventListener("click", exportPdf);
+  forceUpdateBtn.addEventListener("click", forceUpdateApp);
   updateAppBtn.addEventListener("click", () => {
     if (waitingServiceWorker) {
       waitingServiceWorker.postMessage({ type: "SKIP_WAITING" });
+    } else {
+      forceUpdateApp();
     }
   });
   renderSavedQuotes();
