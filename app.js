@@ -43,8 +43,10 @@ const savedQuotesList = document.querySelector("#savedQuotesList");
 const logoStatus = document.querySelector("#logoStatus");
 const updateBanner = document.querySelector("#updateBanner");
 const updateAppBtn = document.querySelector("#updateAppBtn");
+const exportHint = document.querySelector("#exportHint");
 let waitingServiceWorker = null;
 let refreshingForUpdate = false;
+let exportHintTimeout = null;
 
 function today() {
   return new Date().toISOString().slice(0, 10);
@@ -161,6 +163,34 @@ function removeLogo() {
 function quoteLabel(data) {
   const parts = [data.quoteNumber, data.clientName, data.quoteDate].filter(Boolean);
   return parts.length ? parts.join(" - ") : "Presupuesto sin datos";
+}
+
+function fileSafeName(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, "")
+    .replace(/\s+/g, "-")
+    .slice(0, 80);
+}
+
+function showExportHint() {
+  exportHint.hidden = false;
+  clearTimeout(exportHintTimeout);
+  exportHintTimeout = setTimeout(() => {
+    exportHint.hidden = true;
+  }, 4500);
+}
+
+function exportPdf() {
+  const data = getFormData();
+  const previousTitle = document.title;
+  const titleParts = ["Presupuesto", data.quoteNumber, data.clientName].filter(Boolean);
+  document.title = fileSafeName(titleParts.join(" - ")) || "Presupuesto";
+  showExportHint();
+  window.print();
+  setTimeout(() => {
+    document.title = previousTitle;
+  }, 1000);
 }
 
 function saveQuoteCopy() {
@@ -416,7 +446,7 @@ function boot() {
   });
 
   document.querySelector("#saveQuoteBtn").addEventListener("click", saveQuoteCopy);
-  document.querySelector("#printBtn").addEventListener("click", () => window.print());
+  document.querySelector("#printBtn").addEventListener("click", exportPdf);
   updateAppBtn.addEventListener("click", () => {
     if (waitingServiceWorker) {
       waitingServiceWorker.postMessage({ type: "SKIP_WAITING" });

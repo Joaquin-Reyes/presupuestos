@@ -428,6 +428,26 @@ textarea:focus {
   display: none;
 }
 
+.export-hint {
+  background: #fff;
+  border: 1px solid #c7d1dc;
+  border-radius: 8px;
+  bottom: 16px;
+  box-shadow: 0 14px 34px rgba(24, 32, 42, 0.14);
+  color: var(--ink);
+  left: 50%;
+  max-width: min(520px, calc(100vw - 24px));
+  padding: 12px 14px;
+  position: fixed;
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 19;
+}
+
+.export-hint[hidden] {
+  display: none;
+}
+
 @media (max-width: 980px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -482,7 +502,9 @@ textarea:focus {
   }
 
   .app-header,
-  .form-panel {
+  .form-panel,
+  .export-hint,
+  .update-banner {
     display: none;
   }
 
