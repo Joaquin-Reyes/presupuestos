@@ -505,8 +505,15 @@ textarea:focus {
 }
 
 @media print {
+  @page {
+    margin: 7mm;
+    size: A4;
+  }
+
   body {
     background: #fff;
+    color: #000;
+    font-size: 10.5pt;
   }
 
   .app-header,
@@ -527,10 +534,95 @@ textarea:focus {
     padding: 0;
   }
 
+  .quote-preview {
+    background: #fff;
+  }
+
   .document-page {
     border: 0;
     box-shadow: none;
     min-height: auto;
-    padding: 10mm;
+    padding: 0;
+  }
+
+  .preview-head {
+    border-bottom-width: 2px;
+    gap: 10px;
+    padding-bottom: 8px;
+  }
+
+  .preview-head h2 {
+    font-size: 15pt;
+    margin-bottom: 3px;
+  }
+
+  .preview-head p,
+  .letter-meta p,
+  .preview-block p,
+  .conditions-grid p {
+    margin-bottom: 3px;
+  }
+
+  .preview-meta {
+    font-size: 9.5pt;
+    gap: 1px;
+  }
+
+  .preview-meta strong {
+    font-size: 11pt;
+  }
+
+  .document-title {
+    font-size: 10.5pt;
+    margin-top: 10px;
+    padding: 6px 8px;
+  }
+
+  .letter-meta {
+    padding-top: 9px;
+  }
+
+  .preview-block {
+    padding: 9px 0;
+  }
+
+  .preview-block h3 {
+    font-size: 8.5pt;
+    margin-bottom: 5px;
+  }
+
+  .intro-text {
+    line-height: 1.35;
+    padding-top: 9px;
+  }
+
+  .client-grid,
+  .conditions-grid {
+    gap: 10px;
+  }
+
+  .totals {
+    gap: 5px;
+    max-width: 260px;
+    padding-top: 9px;
+  }
+
+  .budget-totals {
+    padding-bottom: 9px;
+  }
+
+  .grand-total {
+    font-size: 11.5pt;
+    padding-top: 6px;
+  }
+
+  .signature-box {
+    min-height: 48px;
+    padding-bottom: 5px;
+  }
+
+  .preview-logo {
+    max-height: 48px;
+    max-width: 90px;
   }
 }
