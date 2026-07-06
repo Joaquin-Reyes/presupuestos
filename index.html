@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0e2438" />
+    <title>Presupuestos Plomeria y Gas</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Herramienta de trabajo</p>
+        <h1>Presupuestos de plomeria y gas</h1>
+      </div>
+      <div class="header-actions">
+        <button class="button secondary" id="newQuoteBtn" type="button">Nuevo</button>
+        <button class="button" id="printBtn" type="button">Imprimir / PDF</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel form-panel" aria-label="Editor de presupuesto">
+        <div class="section-title">
+          <h2>Datos del presupuesto</h2>
+          <span id="saveStatus">Sin guardar</span>
+        </div>
+
+        <div class="saved-quotes">
+          <div class="section-title">
+            <h2>Presupuestos guardados</h2>
+            <button class="button small secondary" id="saveQuoteBtn" type="button">Guardar copia</button>
+          </div>
+          <div id="savedQuotesList" class="saved-quotes-list"></div>
+        </div>
+
+        <div class="grid two">
+          <label class="wide">
+            Logo / imagen de encabezado
+            <input id="logoFile" type="file" accept="image/*" />
+          </label>
+          <div class="logo-actions wide">
+            <span id="logoStatus">Sin logo cargado</span>
+            <button class="button small secondary" id="removeLogoBtn" type="button">Quitar logo</button>
+          </div>
+          <label>
+            Nombre / negocio
+            <input id="businessName" type="text" placeholder="Ej: Juan Perez - Plomeria y Gas" />
+          </label>
+          <label>
+            Subtitulo del encabezado
+            <input id="businessSubtitle" type="text" placeholder="Servicios de plomeria, gas e instalaciones domiciliarias" />
+          </label>
+          <label>
+            Telefono del profesional
+            <input id="businessPhone" type="tel" placeholder="11 1234-5678" />
+          </label>
+          <label>
+            Matricula / registro
+            <input id="businessLicense" type="text" placeholder="Mat. 12345" />
+          </label>
+          <label>
+            Zona
+            <input id="businessArea" type="text" placeholder="CABA / GBA" />
+          </label>
+          <label>
+            Nro. presupuesto
+            <input id="quoteNumber" type="text" autocomplete="off" />
+          </label>
+          <label>
+            Fecha
+            <input id="quoteDate" type="date" />
+          </label>
+          <label>
+            Lugar
+            <input id="quotePlace" type="text" placeholder="Ej: Buenos Aires" />
+          </label>
+          <label class="wide">
+            Titulo del documento
+            <input id="documentTitle" type="text" placeholder="Presupuesto por trabajos a realizar" />
+          </label>
+          <label class="wide">
+            Destinatario / atencion
+            <input id="recipientLine" type="text" placeholder="Ej: Sr/a. cliente, consorcio, administracion" />
+          </label>
+          <label>
+            Cliente
+            <input id="clientName" type="text" placeholder="Nombre del cliente" />
+          </label>
+          <label>
+            Telefono
+            <input id="clientPhone" type="tel" placeholder="11 1234-5678" />
+          </label>
+          <label class="wide">
+            Direccion del trabajo
+            <input id="jobAddress" type="text" placeholder="Calle, numero, localidad" />
+          </label>
+        </div>
+
+        <label>
+          Trabajo a realizar
+          <textarea id="jobDescription" rows="3" placeholder="Ej: Reparacion de perdida, cambio de canilla, instalacion de termotanque"></textarea>
+        </label>
+
+        <label>
+          Texto introductorio
+          <textarea id="introText" rows="2" placeholder="Ej: Por medio de la presente se detalla presupuesto por los trabajos solicitados."></textarea>
+        </label>
+
+        <div class="grid two totals-inputs">
+          <label class="checkbox-label wide">
+            <input id="showSignature" type="checkbox" />
+            Mostrar espacio de firma
+          </label>
+          <label>
+            Total del presupuesto
+            <input id="totalAmount" type="number" min="0" step="0.01" value="0" />
+          </label>
+          <label>
+            Descuento
+            <input id="discount" type="number" min="0" step="0.01" value="0" />
+          </label>
+          <label>
+            Sena / anticipo
+            <input id="deposit" type="number" min="0" step="0.01" value="0" />
+          </label>
+          <label>
+            Validez
+            <input id="validUntil" type="text" placeholder="Ej: 7 dias" />
+          </label>
+          <label>
+            Forma de pago
+            <input id="paymentTerms" type="text" placeholder="Efectivo / transferencia" />
+          </label>
+        </div>
+
+        <label>
+          Observaciones
+          <textarea id="notes" rows="3" placeholder="Incluye materiales, no incluye roturas de pared, sujeto a revision, etc."></textarea>
+        </label>
+
+        <label>
+          Aclaraciones finales
+          <textarea id="footerText" rows="3" placeholder="Ej: Los valores pueden variar si se detectan trabajos adicionales no contemplados."></textarea>
+        </label>
+
+        <label>
+          Texto de firma
+          <input id="signatureText" type="text" placeholder="Firma / aclaracion" />
+        </label>
+      </section>
+
+      <aside class="panel preview-panel" aria-label="Vista previa del presupuesto">
+        <div id="quotePreview" class="quote-preview"></div>
+      </aside>
+    </main>
+
+    <div class="update-banner" id="updateBanner" hidden>
+      <span>Hay una nueva version disponible.</span>
+      <button class="button small" id="updateAppBtn" type="button">Actualizar</button>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

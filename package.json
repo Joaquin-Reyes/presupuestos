@@ -1,0 +1,10 @@
+{
+  "name": "presupuestos-plomeria-gas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App PWA para crear presupuestos de plomeria y gas.",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js"
+  }
+}

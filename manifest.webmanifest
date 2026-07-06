@@ -1,0 +1,19 @@
+{
+  "name": "Presupuestos Plomeria y Gas",
+  "short_name": "Presupuestos",
+  "description": "App para crear presupuestos de plomeria y gas.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#0e2438",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
